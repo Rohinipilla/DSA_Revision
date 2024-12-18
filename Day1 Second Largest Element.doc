@@ -1,0 +1,108 @@
+Day 1: Arrays
+
+1. Second Largest Element
+
+Given an array of positive integers arr[], return the second largest element from the array. If the second largest element doesn't exist then return -1.
+
+Note: The second largest element should not be equal to the largest element.
+
+Solution 1 : 
+
+Understanding Problem : 
+ We have an input arr, which has positive numbers, we have to find the second-largest element
+
+Approaches : 
+
+Thinking: to find the smallest or largest number from an array, we have to sort the array 
+
+Brute Force : 
+Sort the array 
+Return the element from the last index-1
+
+Code: 
+class solution{
+
+	public static int secondLargest(int[] arr,int n){
+		Arrays.sort(arr);
+		return arr[n-2];
+	}
+
+	public static void main(String[] args){
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int [] arr = new int[n];
+		
+		for(int i=0;i<n;i++){
+			arr[i] = sc.nextInt();
+		}
+		Int second_max = secondLargest(arr,n);
+	}
+}
+
+// But there is a test case where the last two element is same, then it doesn’t become the second largest. 
+To handle that we have write a for loop
+
+for(int i=n-2;i>0;i–){
+	if(arr[i] !=arr[i+1]){
+		return arr[i];
+	}
+}
+return -1;
+
+Time complexity is : O(n log n) 
+O(nlogn)- for sorting and O(n) - for traversing array reverse, so complexity becomes O(nlogn)+O(n) 
+Space complexity : O(1)
+
+
+Better Approach:
+ 
+To reduce the time complexity
+First find the largest element in the array by passing throught the array
+Then find the second largest element by passing through the array by considering the element is not equal largest element and greater than the remaining elements
+Code: 
+	public static int secondLargest(int[] arr,int n){
+		int firstmax = -1;
+		for(int i=0;i<n;i++){
+			if(arr[i]>firstmax){
+				firstmax = arr[i];
+			}
+		}
+		//now we have the largest element
+		int secondmax = -1;
+		for(int i=0;i<n;i++){
+			if(arr[i]>secondmax && arr[i] != firstmax){
+				secondmax = arr[i];
+			}
+		}
+		return secondmax;
+	}
+	
+	Time complexity : O(n) 
+	o(n) - For first pass and o(n) for second pass. The Time complexity is O(n)+O(n) = o(n);
+	Space complexity: O(1)
+
+
+Another Better Approach : 
+Instead of traversing through the array twice, we can find the second largest by traversing once.
+
+1.intialize two variables one is firstmax and other is secondmax intalized to -1;
+2. If the element is greater than firstmax then we store the firstmax in secondmax and assign the element to firstmax
+3. But there may be a case where the element is lessthan firstmax but greaterthan secondmax then we have to assign the element to secondmax
+4.at end return the second max
+
+Code: 
+	public static int secondLargest(int[] arr,int n){
+		int firstmax = -1,secondmax=-1;
+		for(int i=0;i<n;i++){
+			if(arr[i]>firstmax){
+				secondmax = firstmax;
+				firstmax = arr[i];
+			}
+      else if(arr[i]>secondmax && arr[i]<firstmax){
+      	secondmax = arr[i];
+      }
+		}
+		return secondmax;
+	}
+Time Complexity : O(n);
+Space complexity : O(1);
