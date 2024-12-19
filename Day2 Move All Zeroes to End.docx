@@ -1,0 +1,100 @@
+Day 2 : Arrays
+
+2. Move All Zeroes to End
+Given an array arr[]. Push all the zeros of the given array to the right end of the array while maintaining the order of non-zero elements. Do the mentioned change in the array in place.
+
+Understanding Problem : 
+We have an array which contains zeroes and non-zeroes numbers
+We have to move all the zeroes to right end. But there is a condition where the order of Non-Zero elements should remain same
+
+Brute Force: 
+To maintain the order of elements we can store the elements in a temporary array
+First we store all the non-zero elements in the temp arr, after that fill the remaining positions with zero
+Then copy the elements to the original array
+
+Code : 
+class solution{
+	public static void moveZeroes(int[] arr,int n){
+		int[] temp = new int[n];
+int j=0;
+		for(int i=0;i<n;i++){
+			if(arr[i] != 0){
+				temp[j] = arr[i];
+				j++;
+			}
+		}
+		while(j<n){
+			temp[j] =0;
+			j++;
+		}
+
+		for(int i=0;i<n;i++){
+			arr[i] = temp[i];
+		}
+	}
+
+	public static void main(String[] args){
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int[] arr = new int[n];
+		for(int i=0;i<n;i++){
+			arr[i] = sc.nextInt();
+		}
+		moveZeroes(arr,n);
+		for(int i=0;i<n;i++){
+			System.out.print(arr[i]+” “);
+		}
+	}
+	Time Complexity : O(n)
+	Space complexity : O(n)
+
+Here we use extra space, but we need to do it in place.
+
+Better Approach : 
+We need to initialize a variable count to zero know the non-zero elements,to track where the next non-zero element should be placed
+After placing the non-zero elements at index count and incrementing the count
+Then we have to assign the remaining position from count to array length as zeroes
+
+Code:
+public static void moveZeroes(int[] arr,int n){
+		int count=0;
+		for(int i=0;i<n;i++){
+			if(arr[i] != 0){
+				arr[count] = arr[i];
+				count++;
+			}
+		}
+		while(count<n){
+			arr[count] =0;
+			count++;
+		}
+
+		for(int i=0;i<n;i++){
+			arr[i] = temp[i];
+		}
+	}
+
+	Time Complexity: O(n) - we traverse the array twice at worst condition
+	Space Complexity: O(1)
+
+Another Better Approach:
+	Instead of assigning zeros at last
+We can swap the zero with next non-zero element
+
+Code : 
+public static void moveZeroes(int[] arr,int n){
+		
+int count=0;
+		for(int i=0;i<n;i++){
+			if(arr[i] !=count){
+			int temp = arr[i];
+			arr[i] = arr[count];
+			arr[count] = temp;
+			count++;
+		}
+
+		}
+	}
+
+	Time Complexity : O(n)
+	Space Complexity : O(1)
