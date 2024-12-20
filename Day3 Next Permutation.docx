@@ -1,0 +1,97 @@
+Day 3: Next Permutation
+
+Given an array of integers arr[] representing a permutation, implement the next permutation that rearranges the numbers into the lexicographically next greater permutation. If no such permutation exists, rearrange the numbers into the lowest possible order (i.e., sorted in ascending order). 
+
+Note - A permutation of an array of integers refers to a specific arrangement of its elements in a sequence or linear order.
+
+Examples:
+
+Input: arr = [2, 4, 1, 7, 5, 0]
+Output: [2, 4, 5, 0, 1, 7]
+Explanation: The next permutation of the given array is {2, 4, 5, 0, 1, 7}.
+
+Understanding Problem : 
+ We have an array of numbers, which are in some permutation. We have to find the next permutation - which means which is greater than the given permutation but small among all the permutations which are greater than given.
+
+Thinking : we can generate the permutations all the permutations and find the answer from it.
+
+Brute Force Approach :
+1. Generate all the permutations
+2. Store the permutations which are greater than given
+3.find the smallest among them
+4. Return the answer
+
+The problem with this approach is it takes lot of time and space.
+We have to generate N! Permutations for N digits, and each of size N.
+
+The time Complexity is : O(N*N!) - it is very huge
+Space Complexity : O(N)
+
+How do we reduce the time complexity, what do we do when we write on a paper or in a math class
+First we look from the unit digits(incase of number) 
+If the previous place is smaller, then we swap it with the small digit from the right side and reverse the digit after the swapped place.
+
+Optimal Approach : 
+Start traversing from right.
+Stop traversing when we find the current element is smaller than element at right
+Now look for the smallest digit after the index to it’s right
+Swap the current index element with smallest element
+Then reverse the digit after current index to it’s right.
+It is our next permutation
+
+Code :
+
+Class solution{
+	void reverse(int[] arr,int start, int end){
+        while(start<=end){
+            int temp = arr[start];
+            arr[start] = arr[end];
+            arr[end] = temp;
+            
+            start++;
+            end--;
+        }
+    	}
+ void nextPermutation(int[] arr) {
+       
+        int n =  arr.length;
+        int ind = -1;
+        for(int i=n-2;i>=0;i--){
+            if(arr[i]<arr[i+1]){
+                ind = i;
+                break;
+            }
+        }
+        if(ind == -1){
+            reverse(arr,0,n-1);
+            return;
+        }
+        for(int i= n-1;i>=0;i--){
+            
+            if(arr[i]>arr[ind]){
+                int temp = arr[i];
+                arr[i] = arr[ind];
+                arr[ind] = temp;
+                break;
+            }
+        }
+        
+        reverse(arr,ind+1,n-1);
+    }
+
+	public static void main(String[] args){
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int[] arr = new int[n];
+		for(int i=0;i<n;i++){
+			arr[i] = sc.nextInt();
+		}
+		nextPermutation(arr);
+		for(int i=0;i<n;i++){
+			System.out.print(arr[i]+” ”);
+		}
+		sc.close();
+	}
+	
+Time Complexity: O(N) - we traverse the array once
+Space Complexity: O(1).
