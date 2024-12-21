@@ -1,0 +1,85 @@
+Day 4 : 	Majority Element II
+
+You are given an array of integer arr[] where each number represents a vote to a candidate. Return the candidates that have votes greater than one-third of the total votes, If there's not a majority vote, return an empty array. 
+
+Note: The answer should be returned in an increasing format.
+
+Understanding Problem :
+We have the elements which have the count > n/3 . here n is the size of the array
+
+Thinking:
+We have to check every candidate
+
+Brute Force Approach :
+1. we have to traverse the array from start to end
+2. For every candidate we have to check the candidate how many times it occurs in the array by using inner for loop
+3. After the iteration we check the count is greater than n/3 or not. If it satisfies then we add it to our result
+For this process 
+Time Complexity is : O(n^2)
+	O(n) - for outer loop and O(n) for inner loop
+Space Complexity : O(1)
+
+Better Approach:
+When we think about counting we can use hash map
+
+The process is 
+We insert the candidates into the hashmap and increment the count of the candidate in the hashmap when it occurs
+then traverse through the hash map and check if any key - value satisfies the condition
+If it satisfies the condition we can add to our result
+
+Instead of traversing through the hashmap after storing we can check in that loop itself.
+
+Time Complexity : O(N)
+Space Complexity : O(N)
+
+Optimal Approach: 
+We can have a little observation to solve the problem more effectively
+
+We can use  Boyer-Moore’s Voting Algorithm
+
+Start by initializing two variables, num1 and num2 to minimum value, to represent the potential majority element candidates, along with two counters, c1 and c2 to 0, to keep track of their counts.
+Iterate through the array:
+If the current element matches either num1 or num2, increment the respective counter.
+If the count for any candidate becomes zero, replace that candidate with the current element and reset its count to 1.
+If neither candidate matches the current element and both counters are non-zero, Now traverse through the array to count how many times the chosen candidates appear in the array.
+If either candidate appears more than n/3 times, include it in the result array.
+Now we sort and return the array
+
+Code:
+
+class Solution {
+    
+    public List<Integer> findMajority(int[] nums) {
+        int num1 = Integer.MIN_VALUE, num2 = Integer.MIN_VALUE, c1 = 0, c2 = 0;
+        int n = nums.length;
+        for (int x : nums) {
+            if (x == num1) {
+                c1++;
+            } else if (x == num2) {
+                c2++;
+            } else if (c1 == 0) {
+                num1 = x;
+                c1 = 1;
+            } else if (c2 == 0) {
+                num2 = x;
+                c2 = 1;
+            } else {
+                c1--;
+                c2--;
+            }
+        }
+        c1 = c2 = 0;
+        for (int x : nums) {
+            if (x == num1) c1++;
+            else if (x == num2) c2++;
+        }
+        List<Integer> res = new ArrayList<>();
+        if (c1 > n / 3) res.add(num1);
+        if (c2 > n / 3) res.add(num2);
+        Collections.sort(res);
+        return res;
+    }
+}
+
+Time Complexity: O(N)
+Space Complexity : O(1)
