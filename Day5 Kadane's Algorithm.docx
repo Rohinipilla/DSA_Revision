@@ -1,0 +1,77 @@
+Day 5 : Arrays
+
+Maximum Subarray Sum – Kadane’s Algorithm
+Given an integer array arr[]. You need to find the maximum sum of a subarray.
+
+Understanding : 
+We have an array we need to find a subarry - the subarray which have maximum sum among all the subarrays
+Subarray - The part of arr, which is continuous 
+
+Thinking: To find a subarray we have to generate all the subarrays.
+
+Brute Force : 
+Generate the subarray 
+Calculate the sum
+Compare with the sum of previous subarrays
+
+Approach : using three for loops
+Intialize a variable to maximum to Integer.MIN_VALUE;
+
+for i to n : 
+	for j=i to n:
+sum = 0
+		for k=i to j:
+			sum += arr[k]
+	maximum = max(maximum,sum)
+
+return maximum
+
+Time Complexity : O(n^3)
+Space Complexity : O(1)
+
+Better Approach: using 2 loops
+for i to n:
+	sum =0
+	for j=i to n:
+		sum += arr[j];
+	maximum = max(maximum,sum)
+return maximum
+
+Time Complexity : O(n^2)
+Space Complexity : O(1)
+
+Optimal Approach: kadane’s Algorithm
+
+Using Kadane’s algorithm we can reduce the time complexity to O(n)
+
+We have to traverse through the array and find the maximum sum of all subarrays at that position.
+
+To find the maximum subarray at O(1) time, we follow this approach.it is
+
+We will consider the current position element as an extended subarray if the sum up to its previous element is positive
+If the sum up to the previous element is negative, then we restart our subarray by assigning the sum to 0.
+
+
+int maxSubarraySum(int[] arr) {
+
+        // Your code here
+        int sum = 0;
+        int maxsum = Integer.MIN_VALUE;
+        int n = arr.length;
+        
+        for(int i=0;i<n;i++){
+            
+            sum += arr[i];
+            
+            maxsum = Math.max(maxsum,sum);
+            
+            if(sum<0){
+                sum = 0;
+            }
+        }
+        
+        return maxsum;
+    }
+
+Time Complexity : O(n)
+Space Complexity : O(1)
